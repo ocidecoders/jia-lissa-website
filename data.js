@@ -31,8 +31,6 @@ const featuredImages = [
 const feedImages = [
     'https://i.ibb.co.com/fdvLqFQt/69937895-002-9ceb.jpg',
     'https://i.ibb.co.com/ccT1SX0R/81257021-009-9599.jpg',
-    'https://i.ibb.co.com/prMCfn60/17912087-006-13f1.jpg',
-    'https://i.ibb.co.com/55948775-001-ed14.jpg',
     'https://i.ibb.co.com/vxmddf9r/49525075-001-453f.jpg',
     'https://i.ibb.co.com/PGrvkDVh/68801123-010-5cf8.jpg',
     'https://i.ibb.co.com/mry3VBpr/98619551-015-bbbd.jpg',
