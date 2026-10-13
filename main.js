@@ -114,3 +114,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// ===== ABOUT PAGE — Bio image loader =====
+document.addEventListener('DOMContentLoaded', () => {
+    const bioWrap = document.getElementById('bioImageWrap');
+    if (!bioWrap) return;
+    if (typeof bioImage !== 'undefined' && bioImage && bioImage.trim() !== '') {
+        const img = document.createElement('img');
+        img.src = bioImage;
+        img.alt = 'Jia Lissa Portrait';
+        bioWrap.appendChild(img);
+    } else {
+        // Hide empty bio image container and collapse grid
+        bioWrap.style.display = 'none';
+        const bioGrid = bioWrap.closest('.bio-grid');
+        if (bioGrid) {
+            bioGrid.style.gridTemplateColumns = '1fr';
+            bioGrid.style.textAlign = 'center';
+            bioGrid.style.maxWidth = '760px';
+        }
+    }
+});
