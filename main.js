@@ -1,5 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ===== SMART ALT TEXT POOLS (SEO) =====
+    const altPoolHero = [
+        'Jia Lissa portrait photography',
+        'Jia Lissa editorial fashion',
+        'Jia Lissa model portrait',
+        'Jia Lissa russian model',
+        'Jia Lissa photoshoot'
+    ];
+    const altPoolFeatured = [
+        'Jia Lissa photoshoot',
+        'Jia Lissa portrait photography',
+        'Jia Lissa editorial fashion',
+        'Jia Lissa lifestyle photography',
+        'Jia Lissa model portrait',
+        'Jia Lissa russian model',
+        'Jia Lissa redhead model'
+    ];
+    const altPoolFeed = [
+        'Jia Lissa photoshoot',
+        'Jia Lissa portrait photography',
+        'Jia Lissa editorial fashion',
+        'Jia Lissa lifestyle photography',
+        'Jia Lissa model portrait',
+        'Jia Lissa russian model',
+        'Jia Lissa redhead photography',
+        'Jia Lissa artistic portrait',
+        'Jia Lissa natural light portrait'
+    ];
+
     // ===== HERO SPLIT-SCREEN SLIDER =====
     const heroContainer = document.getElementById('heroSlideshow');
     if (heroContainer && typeof heroImages !== 'undefined' && heroImages.length > 0) {
@@ -7,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const slide = document.createElement('div');
             slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
             slide.style.backgroundImage = `url('${url}')`;
+            slide.setAttribute('role', 'img');
+            slide.setAttribute('aria-label', altPoolHero[i % altPoolHero.length]);
             heroContainer.appendChild(slide);
         });
         const slides = heroContainer.querySelectorAll('.hero-slide');
@@ -20,15 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // ===== INTRO IMAGE alt fix =====
+    const introImg = document.querySelector('.intro-image-wrap img');
+    if (introImg) {
+        introImg.alt = 'Jia Lissa portrait photography — Russian model';
+    }
+
     // ===== FEATURED HIGHLIGHTS =====
     const featuredGrid = document.getElementById('featuredGrid');
     if (featuredGrid && typeof featuredImages !== 'undefined') {
         featuredImages.forEach((url, i) => {
             const img = document.createElement('img');
             img.src = url;
-            img.alt = 'Featured ' + (i + 1);
+            img.alt = altPoolFeatured[i % altPoolFeatured.length];
             img.loading = 'lazy';
-            img.addEventListener('click', () => openLightbox(url));
+            img.addEventListener('click', () => openLightbox(url, img.alt));
             featuredGrid.appendChild(img);
         });
     }
@@ -44,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const img = document.createElement('img');
             img.src = url;
-            img.alt = 'Feel Jia ' + (i + 1);
+            img.alt = altPoolFeed[i % altPoolFeed.length];
             img.loading = i < 2 ? 'eager' : 'lazy';
 
             const counter = document.createElement('span');
@@ -84,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== LIGHTBOX =====
-    function openLightbox(url) {
+    function openLightbox(url, altText) {
         const overlay = document.createElement('div');
         overlay.className = 'lightbox-overlay';
         const closeBtn = document.createElement('span');
@@ -93,11 +130,31 @@ document.addEventListener('DOMContentLoaded', () => {
         closeBtn.addEventListener('click', (e) => { e.stopPropagation(); overlay.remove(); });
         const image = document.createElement('img');
         image.src = url;
+        image.alt = altText || 'Jia Lissa';
         image.className = 'lightbox-image';
         overlay.addEventListener('click', () => overlay.remove());
         overlay.appendChild(closeBtn);
         overlay.appendChild(image);
         document.body.appendChild(overlay);
+    }
+
+    // ===== ABOUT PAGE — Bio image loader =====
+    const bioWrap = document.getElementById('bioImageWrap');
+    if (bioWrap) {
+        if (typeof bioImage !== 'undefined' && bioImage && bioImage.trim() !== '') {
+            const img = document.createElement('img');
+            img.src = bioImage;
+            img.alt = 'Jia Lissa biography portrait — Russian model';
+            bioWrap.appendChild(img);
+        } else {
+            bioWrap.style.display = 'none';
+            const bioGrid = bioWrap.closest('.bio-grid');
+            if (bioGrid) {
+                bioGrid.style.gridTemplateColumns = '1fr';
+                bioGrid.style.textAlign = 'center';
+                bioGrid.style.maxWidth = '760px';
+            }
+        }
     }
 
     // ===== SMOOTH SCROLL =====
@@ -113,25 +170,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-});
-
-// ===== ABOUT PAGE — Bio image loader =====
-document.addEventListener('DOMContentLoaded', () => {
-    const bioWrap = document.getElementById('bioImageWrap');
-    if (!bioWrap) return;
-    if (typeof bioImage !== 'undefined' && bioImage && bioImage.trim() !== '') {
-        const img = document.createElement('img');
-        img.src = bioImage;
-        img.alt = 'Jia Lissa Portrait';
-        bioWrap.appendChild(img);
-    } else {
-        // Hide empty bio image container and collapse grid
-        bioWrap.style.display = 'none';
-        const bioGrid = bioWrap.closest('.bio-grid');
-        if (bioGrid) {
-            bioGrid.style.gridTemplateColumns = '1fr';
-            bioGrid.style.textAlign = 'center';
-            bioGrid.style.maxWidth = '760px';
-        }
-    }
 });
